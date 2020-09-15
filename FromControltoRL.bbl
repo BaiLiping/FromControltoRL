@@ -50,6 +50,12 @@ R.~Sutton and A.~Barto, ``Introduction to reinforcement learning,'' 1998.
 S.~Kullback and R.~A. Leibler, ``On information and sufficiency,'' \emph{Annals
   of Mathematical Statistics}, vol.~22, pp. 79--86, 1951.
 
+\bibitem{Shi2019NeuralLS}
+G.~Shi, X.~Shi, M.~O'Connell, R.~Yu, K.~Azizzadenesheli, A.~Anandkumar, Y.~Yue,
+  and S.-J. Chung, ``Neural lander: Stable drone landing control using learned
+  dynamics,'' \emph{2019 International Conference on Robotics and Automation
+  (ICRA)}, pp. 9784--9790, 2019.
+
 \bibitem{Hewing2020LearningBasedMP}
 L.~Hewing, K.~P. Wabersich, M.~Menner, and M.~N. Zeilinger, ``Learning-based
   model predictive control: Toward safe learning in control,'' 2020.
