@@ -39,6 +39,15 @@ B.~Recht, ``A tour of reinforcement learning: The view from continuous
 K.~Hornik, ``Approximation capabilities of multilayer feedforward networks,''
   \emph{Neural Networks}, vol.~4, pp. 251--257, 1991.
 
+\bibitem{Schwartz1989TheNC}
+J.~Schwartz, ``The new connectionism: developing relationships between
+  neuroscience and artificical intelligence,'' 1989.
+
+\bibitem{Hornik1989MultilayerFN}
+K.~Hornik, M.~Stinchcombe, and H.~White, ``Multilayer feedforward networks are
+  universal approximators,'' \emph{Neural Networks}, vol.~2, pp. 359--366,
+  1989.
+
 \bibitem{Levine2018ReinforcementLA}
 S.~Levine, ``Reinforcement learning and control as probabilistic inference:
   Tutorial and review,'' \emph{ArXiv}, vol. abs/1805.00909, 2018.

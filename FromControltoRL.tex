@@ -49,7 +49,7 @@
 % === ABSTRACT ====================================================================
 % =================================================================================
 \begin{abstract}
-This paper is aimed at providing researchers in the field of control a bridge for incorporating deep reinforcement learning into their work. We are not talking about adding visual recognition capacity into end-to-end control loops, but technical details on how to take advantage of the progresses brought about by deep learning and its computational infrastructure. Reinforcement Learning is an inference based "Blackbox" approach while traditional optimization is the "Whitebox" approach where phase portrait of a dynamic system is carefully manipulated. Clearly, neither is perfect. "Blackbox" approach is data hungary and there would always be dynamics that elude the "Whitebox" description. Some of the techniques developed in the reinforcement community can be useful to control researchers, yet there are four barriers: different notation systems; lack of theoritical proof; obfuscating acronyms; changing "best practices". In this paper, we present the taxotamy of reinforcement learning from the perspective of control and optimization. We tease out the most important concepts and hope to provide control researchers ideas and clues as of how to further their research by riding the wave of reinforcement learning.
+This paper is aimed at providing researchers in the field of control a bridge for incorporating deep reinforcement learning into their work. We are not talking about adding newly developped visual recognition capacity into end-to-end control loops, but technical details on how to take advantage of the progresses brought about by deep learning and its computational infrastructure. Reinforcement Learning is an inference based "Blackbox" approach while traditional optimization is the "Whitebox" approach where phase portrait of a dynamic system is carefully manipulated. Clearly, neither is perfect. "Blackbox" approach is data hungary and there would always be dynamics that elude the "Whitebox" description. Some of the techniques developed in the reinforcement community can be useful to control researchers, yet there are four barriers: different notation systems; lack of theoritical proof; obfuscating acronyms; fast evolving best practices. In this paper, we present the taxotamy of reinforcement learning from the perspective of control and optimization. We tease out the most important concepts and hope to provide control researchers ideas and clues as of how to further their research by riding the wave of reinforcement learning.
 \end{abstract}
 % === KEYWORDS ====================================================================
 % =================================================================================
@@ -70,21 +70,21 @@ Reinforcement Learning, Control Theory, Optimal Control, Optimization
 % === I. Paper =============================================================
 % =================================================================================
 \section{Introduction}
-\IEEEPARstart{R}{einforcement} learning is the process of methotically extracting information from experiments to gradually bound the policy distribution, maximizing the expected reward along a path. Trajectory Optimization, on the other hand, utilizes myriade of computational techniques to incoperate scripted constraints, which capture the dynamics of a system with differential or recurssive equations, to shape the phase portrait. The theoretical foundation of reinforcement learning are statistical learning theory and approaximate dynamic programming. When the first batch of reasonable RL results were introduced, they were met with coldness. The preface of Bertseka's book Neuro Dynamic Programming provides a good sample on how reinforcement learning is perceived by the control community back in 1996: ...These methods (Reinforcement Learning) were aiming to provide effective suboptimal solutions to complex problems of planning and sequential decision making under uncertainty, that for a long time were thought to be intractable. Our first impression was that the new methods were ambitious, overly optimistic, and lacked firm foundation....Three years later, after a lot of study, analysis, and experimentation, we believe that our initial impressions were largely correct. \cite{Bertsekas1996NeuroDynamicP}
+\IEEEPARstart{R}{einforcement} learning is the process of methotically extracting information from experiments to gradually bound the policy distribution, maximizing the expected reward along a path. Trajectory Optimization, on the other hand, tries to capture the dynamics of a system with differential or recurssive equations, and shape the phase portrait with actions. The theoretical foundation of reinforcement learning are statistical learning theory and approaximate dynamic programming. When the first batch of reasonable RL results were introduced, they were met with coldness. The preface of Bertseka's book Neuro Dynamic Programming provides a good sample on how reinforcement learning is perceived by the control community back in 1996: ...These methods (Reinforcement Learning) were aiming to provide effective suboptimal solutions to complex problems of planning and sequential decision making under uncertainty, that for a long time were thought to be intractable. Our first impression was that the new methods were ambitious, overly optimistic, and lacked firm foundation....Three years later, after a lot of study, analysis, and experimentation, we believe that our initial impressions were largely correct. \cite{Bertsekas1996NeuroDynamicP}
 
-Things are certainly different today. Reinforment Learning community routinely generates results that seem untainable to the control community. What has changed is not the theoretical foundation of RL, which is as leaky as it is in 1996, but its computational infrastructure. Before 2010, the predominent tools for function approximation are kernel methods, where feature spaces are used to transform nonlinear functions into linear space such that regression can be performed. Today, the default function approximator are neural networks. Another major change in computation is that of GPU based acceleration. Before the advent of CUDA, GPU programming requires PhD in computer graphics. Today, anyone who is proficient in C/C++ can programme GPU to parallelize their compuation. Software packages such as PyTorch and Tensorflow made this even easier. This computation capacity sometimes brought about unexpected results. For instance, the asymchronous actor critic method(A3C) is not exactly rigirous mathematically speaking, yet with fast computation, it works emperically.
+Things are certainly different today. Reinforment Learning community routinely generates results that seem untainable to the control community. What has changed is not the theoretical foundation of RL, which is as leaky as it was in 1996, but its computational infrastructure. Before 2010, the predominent tools for function approximation are kernel methods, where feature spaces are used to transform nonlinear functions into linear space such that regression can be performed. Today, the default function approximator are neural networks. Another major change in computation is that of GPU based acceleration. Before the advent of CUDA, GPU programming requires PhD in computer graphics. Today, anyone who is proficient in C/C++ can programme GPU to parallelize their compuation. Software packages such as PyTorch and Tensorflow made this even easier. This computation capacity sometimes brought about unexpected results. For instance, the asymchronous actor critic method(A3C) is not exactly rigirous mathematically speaking, yet with fast computation, it works emperically.
 
-Reinforcement Leraning face the problem of data efficiency. Their community has been trying to make it more broadly applicable and more efficient: Imitation learning and reverse reinforcemnt learning \cite{Ho2016GenerativeAI} aims at derive constraints from observed best solution; Sergey Levine utilizes unsupervised learning to build an agent with intuitions of the physical world \cite{Finn2016UnsupervisedLF}; Chelsea Finn introduced Meta-Learning \cite{Finn2017ModelAgnosticMF} to extract overaching invariant structures from similar tasks with different setting. This line of research require firm grasp of statistical learning theory, information theory to design efficient schemes for exploration and minimize sampling collection. The "White Box" approach is based on classical control theories. It has a rich history and enjoyed broad success, yet despite effort from the best control theoriests, some complicated dynamics still elude mathematical scription.
+However, reinforcement learning methods are not perfect. RL community has been trying to make it more broadly applicable and more efficient: Imitation learning and reverse reinforcemnt learning \cite{Ho2016GenerativeAI} aims at derive constraints from observed best solution; Sergey Levine utilizes unsupervised learning to build an agent with intuitions of the physical world \cite{Finn2016UnsupervisedLF}; Chelsea Finn introduced Meta-Learning \cite{Finn2017ModelAgnosticMF} to extract overaching invariant structures from similar tasks with different setting. This line of research require firm grasp of statistical learning theory, information theory to design efficient schemes for exploration and minimize sampling collection.
 
-Model of a dynamic system and its control strategies can be learned statistically or they can be written mathematically, and there is no reason that these two perspectives can't merge together. Unfortunately, these two subjects are studied by two communities of researchers who use different notations to discribe the same processes and they publish their research only in journals of their own disciplines. In this paper, we hope to provide a bridge for researchers in the field of control theories who would like to incorporate reinforcement learning into their works. We are not the first ones to take up this challenge. Recently, there are interdiscipline conferences held specifially for the purpose of briding the gaps between these groups of people, for instance the \href{https://l4dc.mit.edu/}{L4DC (Learning for Dynamic Control) conference} and \href{https://www.ipam.ucla.edu/programs/workshops/intersections-between-control-learning-and-optimization/}{Intersections between Control, Learning and Optimization Workshop}.
+Model of a dynamic system and its control strategies can be learned statistically or they can be written mathematically, and there is no reason why these two perspectives can't merge together. Unfortunately, these two subjects are studied by two communities of researchers who use different notations to discribe the same processes and they publish their research only in journals of their own disciplines. In this paper, we hope to provide a bridge for researchers in the field of control who would like to incorporate reinforcement learning into their works. We are not the first ones to take up this challenge. Recently, there are interdiscipline conferences held specifially for the purpose of briding the gaps between these groups of people, for instance the \href{https://l4dc.mit.edu/}{L4DC (Learning for Dynamic Control) conference} and \href{https://www.ipam.ucla.edu/programs/workshops/intersections-between-control-learning-and-optimization/}{Intersections between Control, Learning and Optimization Workshop}.
 
-In this paper, we build on the work of Benjamin Recht \cite{Recht2018ATO} to formulate reinforcelent learning in the language of optimization. The first barrier facing control researchers is consolidating the notation between control and reinforcement learning communities. Control communities use the notation system introduced by Lev Pontryagin. State is denoted $ \mathcal{X}$, Action is denoted $\mathcal{U}$, which is the first letter of Russian for "Action", the dynamics and stocasticity is captured by physical model constraints $x_{t+1}=f(x_t,u_t,e_t)$ where e denote the noise of a system. The objective is usually to minimize the cost funtion $\mathcal{J(.)}$. Reinforcement Learning communities use the notation system introduced by Richard Bellman who studied dynamic programming. State is denoted $\mathcal{S}$, Action is denoted $\mathcal{A}$. The dynamics and stochaticity is captured via transition matrix $\mathcal{P}$ of a Markov Decision Process.The objective of RL is the maximize the reward function $\mathcal{R(.)}$. Yet, if we set the transition matrix to be identical to the noise, then it is clear that the underlying process behind these two notation system are exactly the same. The differences are nothing but style. Since the audience of our paper is the control community, we would cast reinforcement learning in the control notation system.
+In this paper, we build on the work of Benjamin Recht \cite{Recht2018ATO} to formulate reinforcelent learning in the language of optimization. The first barrier facing control researchers is consolidating the notation between control and reinforcement learning communities. Control communities use the notation system introduced by Lev Pontryagin. State is denoted $ \mathcal{X}$, Action is denoted $\mathcal{U}$ (the first letter of Russian for "Action"), the dynamics and stocasticity is captured by physical model constraints $x_{t+1}=f(x_t,u_t,e_t)$ where e denote the noise of a system. The objective is usually to minimize the cost funtion $\mathcal{J(.)}$. Reinforcement Learning communities use the notation system introduced by Richard Bellman who studied dynamic programming. State is denoted $\mathcal{S}$, Action is denoted $\mathcal{A}$. The dynamics and stochaticity is captured via transition matrix $\mathcal{P}$ of a Markov Decision Process.The objective of RL is the maximize the reward function $\mathcal{R(.)}$. Yet, if we set the transition matrix to be identical to the noise, then it is clear that the underlying process behind these two notation system are exactly the same. The differences are nothing but style. Since the audience of our paper is the control community, we would cast reinforcement learning in the control notation system.
 
 The second barrier facing the control researchings is the sense of standing on shifting sand instead of firm ground. For instance, while the convergence of dynamic programming method is proven, no guarantee can be found in the approximated version of the same algorithm; The asynchronous actor critic method obviously updates the parameters in a haphazard manner yet it works well empirically; the DQN method replace system function with the a specific form of Q function without theoretical proof, etc. For classically trained control researchers who is used to rigirous mathematical formalism, and they may have a broader set of mathematical tools available to them, which might turns out to be a hinderance. For instance, a control researcher might ask why KL divergence is used instead of all the other measurements the guages how different two fucntions are. Turns out, it is emperically easier to implement, yet you need to go to a senimar to find the reasoning behind it. they may find the lack of theoretical support hard to palade. The idea of reinforcement learning is rather straight forward, what is hard is its implementation details.
 
-The third barrier facing control researchers is the jagons and speed of change. If you try to pick up RL from text book today, most likely you would be overwholed by acronyms such XXXXXXXXX. Some of them might already be proven ineffective implementation of the underlying ideas
+The third barrier facing control researchers is the jagons and speed of change. If you try to pick up RL from text book today, most likely you would be overwholed by acronyms such XXXXXXXXX. Some of them might already be proven ineffective implementation of the underlying ideas and the best practice has converged to something else.
 
-This wave of innovation brought about by the reinforcement learning community is not just the implementation techniques, but also the computational infrastructure, notabally the GPU emabled compuating and the PyTorch, Tensorflow software packages. There are classical control algorithms that such as Differential Dynamic Programming can now be powered by those packages. We would also like to list the papers who adapt well known control algorithms for the newly available compuational platforms.
+This wave of innovation brought about by the reinforcement learning community is not just the implementation techniques, but also the computational infrastructure, notabally the GPU enabled parallelization. There are classical control algorithms that such as Differential Dynamic Programming can now be computed in a paralleled fashion. We would also like to list the papers who adapt well known control algorithms for the newly available compuational platforms.
 
 We first provide a taxotamy of reinforcement learning, then we elaborate on the enumerated path in section II and list all the important papers in this area of research. Finally, in section VII, we introduce how the compuational capacity unleashed for reinforcement learning algorithms can be better merged with well-known control algorithms.
 
@@ -101,31 +101,45 @@ By now, neural network is widely accepted that as the universal function approxi
 \begin{subfigure}{0.25\textwidth}
   \centering
   \includegraphics[width=\linewidth]{network1.png}
-  \caption{Additive}
 \end{subfigure}%
 \begin{subfigure}{.25\textwidth}
   \centering
   \includegraphics[width=\linewidth]{network2.png}
-  \caption{Embedding}
 \end{subfigure}
 \caption{Graphical Representation of Network Unit}
 \label{fig:combine}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.25\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{network3.png}
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{network4.png}
+\end{subfigure}
+\caption{jljlkjljljlkj }
+\label{fig:combine}
+\end{figure}
 
-
-
-
-
-
-
-
-
-
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.25\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{network5.png}
+\end{subfigure}%
+\begin{subfigure}{.25\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{network6.png}
+\end{subfigure}
+\caption{lkjlkjlkjlkj}
+\label{fig:combine}
+\end{figure}
 
 \subsection{Recurrent Network and Variational Inference}
-
-
+Pratially Observable Markov Decision Process (POMDP) is treated with recurrent neural network to contextualize the
 
 
 
@@ -157,8 +171,6 @@ Exploration and Exploitation trade off is something studied exhaustively in the 
 The intuition behind maximum entropy reinforcenement learning is the heuristic that when we don't know all the circumstance, we should prioritize options that could give us more choices regardless of how the system dynamics turns out to be. Statitically speaking, this means we should maximize the entropy of a distribution, which measures how uncertain or how broad the distributionb is.
 
 The mathematical measurement used is mutual information \cite{Kullback1951ONIA}. It measures how much information regarding the random variable X is contained in the distribution of random variable Y. A reasonable question to ask is that out of all those measurements which captures "distance" in meansurement theory, why a divergence is chosen? Turns out, this choice is made because of its computational convenience, much like exponentials are chosen in integral transform because its nice features.
-
-
 
 \section{System Modelling}
 

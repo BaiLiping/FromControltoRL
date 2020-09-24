@@ -1,10 +1,13 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Where to Approximate}{}% 2
-\BOOKMARK [1][-]{section.3}{System Modelling}{}% 3
-\BOOKMARK [1][-]{section.4}{Policy Gradient}{}% 4
-\BOOKMARK [1][-]{section.5}{Approximate Dynamic Programming}{}% 5
-\BOOKMARK [1][-]{section.6}{Other Ways to Utilize Increased Computational Power}{}% 6
-\BOOKMARK [2][-]{subsection.6.1}{Multiagent Formulation}{section.6}% 7
-\BOOKMARK [2][-]{subsection.6.2}{Monte Carlo Tree Search}{section.6}% 8
-\BOOKMARK [2][-]{subsection.6.3}{Random Shoot}{section.6}% 9
-\BOOKMARK [1][-]{section*.4}{References}{}% 10
+\BOOKMARK [1][-]{section.2}{Intuition Behind Neural Network}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Basic Network}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Recurrent Network and Variational Inference}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Where to Approximate}{}% 5
+\BOOKMARK [1][-]{section.4}{System Modelling}{}% 6
+\BOOKMARK [1][-]{section.5}{Policy Gradient}{}% 7
+\BOOKMARK [1][-]{section.6}{Approximate Dynamic Programming}{}% 8
+\BOOKMARK [1][-]{section.7}{Other Ways to Utilize Increased Computational Power}{}% 9
+\BOOKMARK [2][-]{subsection.7.1}{Multiagent Formulation}{section.7}% 10
+\BOOKMARK [2][-]{subsection.7.2}{Monte Carlo Tree Search}{section.7}% 11
+\BOOKMARK [2][-]{subsection.7.3}{Random Shoot}{section.7}% 12
+\BOOKMARK [1][-]{section*.7}{References}{}% 13
